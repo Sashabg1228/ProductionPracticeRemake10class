@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <vector>
 #include <unordered_map>
 
@@ -21,8 +22,16 @@ public:
             throw invalid_argument("Provided question is invalid!");
         }
     
-        if (difficulty >= 1 && difficulty <= 10) {
+        if (difficulty < 1 && difficulty > 10) {
             throw invalid_argument("Provided difficulty is invalid!");
+        }
+
+        if(answers.size() != 4) {
+            throw invalid_argument("Provided answers are invalid!");
+        }
+
+        if (correct_answer < 0 && correct_answer > 3) {
+            throw invalid_argument("Provided index is invalid!");
         }
     }
 
@@ -57,7 +66,9 @@ public:
     const int& get_correct_answer() const {
         return this->correct_answer;
     }
-    ///////////
+
+
+
     void set_question(const string& question) {
         if (question.empty()) {
             throw invalid_argument("Provided question is invalid!");
@@ -66,18 +77,24 @@ public:
     }
     
     void set_difficulty(const int& difficulty) {
-        if (difficulty >= 1 && difficulty <= 10) {
+        if (difficulty < 1 && difficulty > 10) {
             throw invalid_argument("Provided difficulty is invalid!");
         }
         this->difficulty = difficulty;
     }
     
     void set_answers(const vector<string>& answers) {
-       this->answers = answers;
-       
+        if(answers.size() != 4) {
+            throw invalid_argument("Provided answers are invalid!");
+        }
+        
+        this->answers = answers;
     }
     
     void set_correct_answer(const int& correct_answer) {
+        if (correct_answer < 0 && correct_answer > 3) {
+            throw invalid_argument("Provided index is invalid!");
+        }
         this->correct_answer = correct_answer;
     }
 };
@@ -127,7 +144,7 @@ public:
     void add_question(const string& question, const int& difficulty, const vector<string>& answers, const int& correct_answer) {
         string mode = _get_mode(difficulty);
         
-        for (auto q: this->questions[mode]) {
+        for (Question q: this->questions[mode]) {
     		if (q.get_question() == question) {
     			throw invalid_argument("There is already such a question!");
     		}
@@ -150,11 +167,10 @@ public:
     
     void _edit_answers(Question& question) {
         vector<string> new_answers;
-        int size = new_answers.size();
         
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < 4; i++) {
             string new_answer;
-            cout << "New answers " << i << ": ";
+            cout << "New answer " << i << ": ";
             cin >> new_answer;
             new_answers.push_back(new_answer);
         }
@@ -226,3 +242,4 @@ int main()
 {
     return 0;
 }
+    
