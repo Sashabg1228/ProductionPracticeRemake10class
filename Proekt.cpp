@@ -165,6 +165,37 @@ private:
 
         return result;
     }
+
+    void _edit_question(Question& question) {
+        string new_question;
+        cout << "New question: ";
+        cin >> new_question;
+        question.set_question(new_question);
+    }
+    void _edit_difficulty(Question& question) {
+        int new_difficulty;
+        cout << "New difficulty: ";
+        cin >> new_difficulty;
+        question.set_difficulty(new_difficulty);
+    }
+    void _edit_answers(Question& question) {
+        vector<string> new_answers;
+        
+        for (int i = 0; i < 4; i++) {
+            string new_answer;
+            cout << "New answer " << i << ": ";
+            cin >> new_answer;
+            new_answers.push_back(new_answer);
+        }
+        question.set_answers(new_answers);
+    }
+    void _edit_correct_answer(Question& question) {
+        int new_correct_answer;
+        cout << "New correct answer: ";
+        cin >> new_correct_answer;
+        question.set_correct_answer(new_correct_answer);
+    }
+    
 public:
     Game(const vector<Question>& questions) {
     	vector<Question> easy, medium, hard;
@@ -212,35 +243,6 @@ public:
         } this->questions[mode].push_back(Question(question, difficulty, answers, correct_answer));   
     }
     
-    void _edit_question(Question& question) {
-        string new_question;
-        cout << "New question: ";
-        cin >> new_question;
-        question.set_question(new_question);
-    }
-    void _edit_difficulty(Question& question) {
-        int new_difficulty;
-        cout << "New difficulty: ";
-        cin >> new_difficulty;
-        question.set_difficulty(new_difficulty);
-    }
-    void _edit_answers(Question& question) {
-        vector<string> new_answers;
-        
-        for (int i = 0; i < 4; i++) {
-            string new_answer;
-            cout << "New answer " << i << ": ";
-            cin >> new_answer;
-            new_answers.push_back(new_answer);
-        }
-        question.set_answers(new_answers);
-    }
-    void _edit_correct_answer(Question& question) {
-        int new_correct_answer;
-        cout << "New correct answer: ";
-        cin >> new_correct_answer;
-        question.set_correct_answer(new_correct_answer);
-    }
     void edit_question(const string& question, const int& difficulty) {
         string mode = _get_mode(difficulty);
     	int size = this->questions[mode].size();
@@ -378,9 +380,9 @@ public:
         for (string mode: {"easy", "medium", "hard"})
         {
             for (Question q: this->questions[mode])
-            {
+            {   
                 q.set_question(cipher(q.get_question(), key));
-                
+
                 q.set_difficulty(stoi(cipher(to_string(q.get_difficulty()), key)));
 
                 answers = q.get_answers();
@@ -433,6 +435,7 @@ public:
 
 int main()
 {
+    
     return 0;
 }
     
