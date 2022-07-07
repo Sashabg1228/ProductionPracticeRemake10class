@@ -24,7 +24,7 @@ public:
             throw invalid_argument("Provided question is invalid!");
         }
     
-        if (difficulty < 1 && difficulty > 10) {
+        if (difficulty < 1 || difficulty > 10) {
             throw invalid_argument("Provided difficulty is invalid!");
         }
 
@@ -95,7 +95,7 @@ class Game {
 private:
     unordered_map<string, vector<Question> > questions;
 
-    char cipherChar(char plaintext, const char key)
+    char cipherChar(char plaintext, char key)
     {
         char result;
 
@@ -110,11 +110,11 @@ private:
 
         return result;
     }
-    string cipher(const string plaintext, const string key)
+    string cipher(string plaintext, string key)
     {
         string result;
         size_t index = 0;
-
+        
         size_t sizeOfPlaintext = plaintext.size();
         size_t sizeOfKey = key.size();
         for (int i = 0; i < sizeOfPlaintext; i++)
@@ -130,7 +130,7 @@ private:
 
         return result;
     }
-    char decipherChar(char plaintext, const char key)
+    char decipherChar(char plaintext, char key)
     {
         char result;
 
@@ -145,7 +145,7 @@ private:
 
         return result;
     }
-    string decipher(const string plaintext, const string key)
+    string decipher(string plaintext, string key)
     {
         string result;
         size_t index = 0;
@@ -375,16 +375,16 @@ public:
     {
         vector<string> answers;
         
-        readFromFile(filename);
-
+        this->readFromFile(filename);
+        
         for (string mode: {"easy", "medium", "hard"})
-        {
+        {   
             for (Question q: this->questions[mode])
             {   
                 q.set_question(cipher(q.get_question(), key));
-
+            
                 q.set_difficulty(stoi(cipher(to_string(q.get_difficulty()), key)));
-
+                
                 answers = q.get_answers();
 
                 for (int i = 0; i < 4; i++)
@@ -399,7 +399,7 @@ public:
             }
         }
 
-        writeToFile(filename);
+        this->writeToFile(filename);
     }
     void decipherFile(const string& filename, const string& key)
     {
@@ -435,7 +435,19 @@ public:
 
 int main()
 {
+    vector<string> answers = {"answer51", "answer52", "answer53", "answer54"};
+    Question question("question5", 5, answers, 1);
+
+    vector<Question> vecHelper;
+    vecHelper.push_back(question);
+
+    Game controlPanel(vecHelper);
+    controlPanel.edit_question(question.get_question(), 5);
+    controlPanel.readFromFile("questions.txt");
+    controlPanel.writeToFile("question.txt");
     
+//    controlPanel.cipherFile("questions.txt", "key");
+//    controlPanel.decipherFile("questions.txt", "key");
+
     return 0;
 }
-    
